@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solana Faucet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #2d334a;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            color: white;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background-color: #2d334a;
+            color: white;
+            padding: 10px 30px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        button:hover {
+            background-color: #475c7a;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Solana Faucet</h1>
+    </header>
+    <div class="container">
+        <h2>Get Free SOL</h2>
+        <form id="faucet-form">
+            <input type="text" id="wallet-address" placeholder="Enter your Solana wallet address" required>
+            <button type="submit">Get 1 SOL</button>
+        </form>
+    </div>
+    <footer>
+        <p>Inspired from <a href="https://www.youtube.com/watch?v=8NeZgmSfbYg">Harkirat's Video</a> | Follow me on <a
+                href="https://twitter.com/your_twitter"><i class="fab fa-twitter"></i> Twitter</a></p>
+    </footer>
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+
+    <script>
+
+        const { Connection, PublicKey } = solanaWeb3;
+
+        // Get Public Address
+        var publicKeyUser = document.getElementById("wallet-address").value;
+
+        // Connection
+        const connection = new Connection("https://api.devnet.solana.com");
+
+        // Function to request an airdrop
+        async function requestAirdrop() {
+            // Get Public Address
+            var userPublicKey = document.getElementById("wallet-address").value;
+            var publicKey = new PublicKey(userPublicKey);
+
+            // 1e9 lamports = 10^9 lamports = 1 SOL
+            let txhash = await connection.requestAirdrop(publicKey, 1e9);
+            console.log(`txhash: ${txhash}`);
+        }
+
+        // Add event listener to form submission
+        document.getElementById("faucet-form").addEventListener("submit", (event) => {
+            event.preventDefault();
+            requestAirdrop();
+        });
+    </script>
+</body>
+
+</html>
